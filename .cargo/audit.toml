@@ -33,4 +33,11 @@ ignore = [
     # the OS root store, so it stays exposed wherever that store still carries
     # emSign ECC Root CA - G3.
     "RUSTSEC-2026-0382", # rustls-webpki: distrusted emSign intermediates accepted
+    # crypto-bigint 0.5.5 is pulled in by aws-sigv4 (AWS SDK signing).
+    # The fix requires >=0.7.6, but aws-sigv4 pins ^0.5 and no 0.5.x
+    # patch exists. The timing-variability issue affects constant-time
+    # big-integer operations; aws-sigv4 uses it only for SigV4a signing
+    # (ECDSA nonce generation), which is not enabled by default.
+    # Remove once the AWS SDK updates aws-sigv4 to crypto-bigint 0.7.
+    "RUSTSEC-2026-0387", # crypto-bigint: timing variability in constant-time operations
 ]
